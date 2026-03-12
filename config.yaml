@@ -1,0 +1,16 @@
+# this file contains the configuration for the DMM monitor, including the VISA address of the DMM and 
+# any other relevant settings.
+
+# VISA device identifiers
+idn_substr: " Model 1201"  # Substring to search for in the *IDN? response to identify the DMM
+
+# CSV logging settings
+log_directory: "./logs"
+log_filename_prefix: "dmm_log"
+log_filename_timestamp_format: "%Y%m%d_%H%M%S"
+
+
+# Plotting settings
+plot_window_size: 200  # Number of recent points to display in the plot
+plot_update_interval: 0.5  # Time in seconds between plot updates
+plot_pause_time: 0.01  # Time in seconds to pause for plot rendering
