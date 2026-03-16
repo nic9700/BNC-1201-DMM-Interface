@@ -15,6 +15,7 @@ from datetime import datetime
 from VISA_address_finder import VISAAddressFinder
 import yaml
 import pyvisa
+import pytz
 
 class DMMMonitor:
     def __init__(self, config_file="config.yaml"):
@@ -77,12 +78,13 @@ class DMMMonitor:
         # Open the CSV file for writing and log the data in real-time
         with open(filename, "w", newline="") as f:
             writer = csv.writer(f)
-            writer.writerow(["timestamp", "time_s", "voltage"])
+            writer.writerow(["timestamp", "time (s)", "voltage (V)"])
 
             try:
                 while True:
                     t = time.time() - start
                     timestamp = datetime.now().isoformat()
+                    timestamp = timestamp.astimezone(pytz.utc)
 
                     v = float(self.dmm.query("READ?"))
 
