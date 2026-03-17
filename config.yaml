@@ -6,6 +6,7 @@ idn_substr: " Model 1201"  # Substring to search for in the *IDN? response to id
 
 # CSV logging settings
 log_directory: "C:\\Users\\He6\\Documents\\HVPSU"
+windows_log_directory: "C:\\Users\\He6\\Documents\\HVPSU"  # Directory to save log files on Windows
 log_filename_prefix: "dmm_log"
 log_filename_timestamp_format: "%Y%m%d_%H%M%S" # Timestamp format for log filenames year-month-day_hour-minute-second
 

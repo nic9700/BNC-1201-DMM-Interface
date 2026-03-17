@@ -39,8 +39,13 @@ class DMMMonitor:
         self.times = deque(maxlen=self.window)
         self.voltages = deque(maxlen=self.window)
 
+        # decide which log directory to use based on OS
+        if os.name == 'nt':  # Windows
+            self.log_dir = self.config.get("windows_log_directory")
+        else:  # Non-Windows (Linux/Mac)
+            self.log_dir = self.config.get("log_directory")        
+
         # logging/plot directory information
-        self.log_dir = self.config.get("log_directory")
         self.log_prefix = self.config.get("log_filename_prefix", "dmm_log")
         if self.log_dir and not os.path.isdir(self.log_dir):
             os.makedirs(self.log_dir)
@@ -113,6 +118,8 @@ class DMMMonitor:
                     saver.save_plot(fig=fig, times=self.times, voltages=self.voltages,
                                     filename=os.path.join(self.log_dir,
                                         f"{self.log_prefix}_{timestamp}.png"))
+                    # print(f"plot saved successfully in {self.log_dir} with prefix {self.log_prefix}")
+                    # print("Exiting gracefully.")
                 except Exception as e:
                     # fallback: just save the figure directly if something goes wrong
                     fallback_name = os.path.join(self.log_dir,
