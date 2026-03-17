@@ -52,7 +52,7 @@ class DMMMonitor:
 
     def run(self):
         plt.ion()
-        fig, ax = plt.subplots()
+        self.fig, self.ax = plt.subplots()
         # # some backends (tkAgg, qt) default to keeping a new figure on top;
         # # try to clear the 'topmost' flag so it behaves like a normal window.
         # try:
@@ -70,11 +70,11 @@ class DMMMonitor:
         # except Exception:
         #     pass
 
-        line, = ax.plot([], []) 
+        self.line, = self.ax.plot([], [])
 
-        ax.set_xlabel("Time (s)")
-        ax.set_ylabel("Voltage (V)")
-        ax.set_title("BNC 1201 Live Voltage")
+        self.ax.set_xlabel("Time (s)")
+        self.ax.set_ylabel("Voltage (V)")
+        self.ax.set_title("BNC 1201 Live Voltage")
 
         start = time.time()
 
@@ -99,10 +99,10 @@ class DMMMonitor:
                     self.times.append(t)
                     self.voltages.append(v)
 
-                    line.set_data(self.times, self.voltages)
+                    self.line.set_data(self.times, self.voltages)
 
-                    ax.relim()
-                    ax.autoscale_view()
+                    self.ax.relim()
+                    self.ax.autoscale_view()
 
                     plt.draw()
                     plt.pause(self.config["plot_pause_time"])
