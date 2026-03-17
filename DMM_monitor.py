@@ -15,6 +15,7 @@ from datetime import datetime
 from VISA_address_finder import VISAAddressFinder
 import yaml
 import pyvisa
+import pytz
 
 class DMMMonitor:
     def __init__(self, config_file="config.yaml"):
@@ -39,9 +40,10 @@ class DMMMonitor:
         self.voltages = deque(maxlen=self.window)
 
         # logging/plot directory information
-        self.log_dir = self.config.get("log_directory", "./")
+        self.log_dir = self.config.get("log_directory")
         self.log_prefix = self.config.get("log_filename_prefix", "dmm_log")
-        os.makedirs(self.log_dir, exist_ok=True)
+        if self.log_dir and not os.path.isdir(self.log_dir):
+            os.makedirs(self.log_dir)
 
     def run(self):
         plt.ion()
@@ -82,7 +84,8 @@ class DMMMonitor:
             try:
                 while True:
                     t = time.time() - start
-                    timestamp = datetime.now().isoformat()
+                    timestamp = datetime.now()
+                    timestamp = timestamp.astimezone(pytz.utc)
 
                     v = float(self.dmm.query("READ?"))
 

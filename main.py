@@ -9,9 +9,9 @@ if __name__ == "__main__":
 
     # once the run ends, you can use the PlotSaver class to save the final plot of the voltage readings
 
-    from plt_saver import PlotSaver
-    saver = PlotSaver(config_file="config.yaml")
-    saver.save_plot()
+    # from plt_saver import PlotSaver
+    # saver = PlotSaver(config_file="config.yaml")
+    # saver.save_plot()
 
 
 
