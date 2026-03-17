@@ -46,9 +46,16 @@ class PlotSaver:
 
         if filename is None:
             filename = f"dmm_voltage_{datetime.now().strftime('%Y%m%d_%H%M%S')}.png"
-        # make sure directory exists if user provided one
-        dirname = os.path.dirname(filename)
+
+        # choose save directory based on OS
+        if os.name == 'nt':  # Windows
+            dirname = os.path.join(self.config.get("windows_log_directory", ""))
+        else:  # Non-Windows (Linux/Mac)
+            dirname = os.path.join(self.config.get("log_directory", ""))
+
+        # make sure directory exists if user provided one and save the figure
         if dirname and not os.path.isdir(dirname):
-            os.makedirs(dirname, exist_ok=True)
-        fig.savefig(filename)
-        print(f"Plot saved as {filename}")
+            os.makedirs(dirname)
+        save_path = os.path.join(dirname, filename) if dirname else filename # save in current directory if no log directory specified
+        fig.savefig(save_path)
+        print(f"Plot saved to: {save_path}")

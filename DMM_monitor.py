@@ -111,19 +111,5 @@ class DMMMonitor:
             except KeyboardInterrupt:
                 # user requested termination; save the final plot
                 plt.ioff()
-                try:
-                    from plt_saver import PlotSaver
-                    saver = PlotSaver(config_file=self.config_file)
-                    # direct the saver to use the same log directory/prefix
-                    saver.save_plot(fig=fig, times=self.times, voltages=self.voltages,
-                                    filename=os.path.join(self.log_dir,
-                                        f"{self.log_prefix}_{timestamp}.png"))
-                    # print(f"plot saved successfully in {self.log_dir} with prefix {self.log_prefix}")
-                    # print("Exiting gracefully.")
-                except Exception as e:
-                    # fallback: just save the figure directly if something goes wrong
-                    fallback_name = os.path.join(self.log_dir,
-                                        f"{self.log_prefix}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.png")
-                    fig.savefig(fallback_name)
-                    print(f"(fallback) plot saved as {fallback_name} due to: {e}")
-                print("Stopped by user, exiting.")
+                print("Live monitoring stopped by user.")
+               

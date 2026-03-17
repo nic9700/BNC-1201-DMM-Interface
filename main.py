@@ -4,14 +4,15 @@
 
 if __name__ == "__main__":
     from DMM_monitor import DMMMonitor
+    from plt_saver import PlotSaver
+    saver = PlotSaver(config_file="config.yaml")
     monitor = DMMMonitor(config_file="config.yaml")
     monitor.run()
 
-    # once the run ends, you can use the PlotSaver class to save the final plot of the voltage readings
-
-    # from plt_saver import PlotSaver
-    # saver = PlotSaver(config_file="config.yaml")
-    # saver.save_plot()
+    # if the user interrupts the script (e.g., by pressing Ctrl+C), we want to save the current plot before exiting.
+    if KeyboardInterrupt:
+        saver.save_plot(fig=monitor.fig)
+        print("Exiting gracefully.")
 
 
 
