@@ -84,17 +84,19 @@ class DMMMonitor:
         # Open the CSV file for writing and log the data in real-time
         with open(filename, "w", newline="") as f:
             writer = csv.writer(f)
-            writer.writerow(["timestamp", "time_s", "voltage"])
+            writer.writerow(["timestamp_utc", "time_s", "voltage"])
 
             try:
                 while True:
                     t = time.time() - start
-                    timestamp = datetime.now()
-                    timestamp = timestamp.astimezone(pytz.utc)
+                    timestamp_utc = datetime.now(pytz.utc).timestamp()  # get current UTC timestamp in seconds since epoch
 
-                    v = float(self.dmm.query("READ?"))
+                    v = float(self.dmm.query("READ?")) # query the DMM for the current voltage reading
 
-                    writer.writerow([timestamp, t, v])
+                    writer.writerow([timestamp_utc, t, v])
+
+                    f.flush()  # ensure data is written to disk
+                    os.fsync(f.fileno())  # force write to disk
 
                     self.times.append(t)
                     self.voltages.append(v)
